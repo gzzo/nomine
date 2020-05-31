@@ -7,10 +7,10 @@ verify_ssl = true
 
 [packages]
 ariadne = "*"
-apsw = "*"
 starlette = "*"
 uvicorn = "*"
 ujson = "*"
+sqlalchemy = "*"
 
 [requires]
 python_version = "3.7"

@@ -1,29 +1,11 @@
-import apsw
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+engine = create_engine('sqlite:///config.db')
+Base = declarative_base()
+Session = sessionmaker(bind=engine)
 
 
-def get_cursor():
-    connection = apsw.Connection('config.db')
-    return connection.cursor()
-
-
-def init_db() -> None:
-    cursor = get_cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS namer 
-        (
-            id INTEGER PRIMARY KEY,
-            name TEXT
-        )
-    ''')
-
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS namer_watch_folder 
-        (
-            id INTEGER PRIMARY KEY,
-            namer_id INTEGER NOT NULL,
-            folder TEXT NOT NULL,
-            FOREIGN KEY (namer_id) REFERENCES namer (id)
-                ON DELETE CASCADE
-                ON UPDATE CASCADE
-        )
-    ''')
+def init_db():
+    Base.metadata.create_all(engine)

@@ -7,7 +7,8 @@ from starlette.routing import Route
 from starlette.applications import Starlette
 from starlette.responses import UJSONResponse
 
-from nomine.db import get_cursor, init_db
+from nomine.db import init_db, Session
+from nomine.models import namer_watch_folder
 
 query = QueryType()
 
@@ -57,18 +58,12 @@ async def publish(request):
 
 
 async def watch():
-    cursor = get_cursor()
-    cursor.execute('''
-        SELECT folder
-        FROM namer_watch_folder
-    ''')
-
-    rows = cursor.fetchall()
+    session = Session()
 
     while True:
-        for row in rows:
-            folder = row[0]
-            queue.put_nowait(os.listdir(folder))
+        watch_folders = session.query(namer_watch_folder.NamerWatchFolder)
+        for watch_folder in watch_folders:
+            queue.put_nowait(os.listdir(watch_folder.folder))
 
         await asyncio.sleep(10)
 
