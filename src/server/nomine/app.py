@@ -6,6 +6,8 @@ from starlette.routing import Route
 from starlette.applications import Starlette
 from starlette.responses import UJSONResponse
 
+from nomine.db import get_cursor
+
 query = QueryType()
 
 type_defs = """
