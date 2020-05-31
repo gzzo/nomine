@@ -1,4 +1,5 @@
 import asyncio
+import os
 
 from ariadne import QueryType, make_executable_schema, SubscriptionType
 from ariadne.asgi import GraphQL
@@ -6,7 +7,7 @@ from starlette.routing import Route
 from starlette.applications import Starlette
 from starlette.responses import UJSONResponse
 
-from nomine.db import get_cursor
+from nomine.db import get_cursor, init_db
 
 query = QueryType()
 
@@ -16,7 +17,7 @@ type_defs = """
     }
     
     type Subscription {
-        counter: Int!
+        folder: [String]!
     }
 """
 
@@ -25,20 +26,19 @@ queue = asyncio.Queue()
 
 
 async def counter_generator(obj, info):
-    yield 0
     while True:
         item = await queue.get()
-        yield item['number']
+        yield item
         queue.task_done()
 
 
 def counter_resolver(count, info):
-    return count + 1
+    return count
 
 
 subscription = SubscriptionType()
-subscription.set_field("counter", counter_resolver)
-subscription.set_source("counter", counter_generator)
+subscription.set_field("folder", counter_resolver)
+subscription.set_source("folder", counter_generator)
 
 
 @query.field("hello")
@@ -56,13 +56,31 @@ async def publish(request):
     return UJSONResponse(dict(success=True))
 
 
+async def watch():
+    cursor = get_cursor()
+    cursor.execute('''
+        SELECT folder
+        FROM namer_watch_folder
+    ''')
+
+    rows = cursor.fetchall()
+
+    while True:
+        for row in rows:
+            folder = row[0]
+            queue.put_nowait(os.listdir(folder))
+
+        await asyncio.sleep(10)
+
+
 async def startup():
-    await asyncio.sleep(1)
-    print('Ready')
+    asyncio.create_task(watch())
 
 routes = [
     Route('/publish', publish, methods=['POST'])
 ]
+
+init_db()
 
 app = Starlette(debug=True, on_startup=[startup], routes=routes)
 app.mount("/graphql", GraphQL(schema, debug=True))

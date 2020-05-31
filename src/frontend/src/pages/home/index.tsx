@@ -5,7 +5,7 @@ import Page from 'components/page'
 
 const HELLO_WORLD = gql`
   subscription OnHelloWorld {
-    counter
+    folder
   }
 `
 
@@ -23,7 +23,7 @@ function Home(): JSX.Element {
     return null
   }
 
-  return <Page>{data.counter}</Page>
+  return <Page>{data.folder.map((obj: string) => obj)}</Page>
 }
 
 export default Home
