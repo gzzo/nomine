@@ -2,9 +2,9 @@ import asyncio
 
 from ariadne import QueryType, make_executable_schema, SubscriptionType
 from ariadne.asgi import GraphQL
+from starlette.routing import Route
 from starlette.applications import Starlette
-from starlette.middleware import Middleware
-from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import UJSONResponse
 
 query = QueryType()
 
@@ -19,10 +19,15 @@ type_defs = """
 """
 
 
+queue = asyncio.Queue()
+
+
 async def counter_generator(obj, info):
-    for i in range(5):
-        await asyncio.sleep(1)
-        yield i
+    yield 0
+    while True:
+        item = await queue.get()
+        yield item['number']
+        queue.task_done()
 
 
 def counter_resolver(count, info):
@@ -42,9 +47,20 @@ def resolve_hello(_, info):
 
 schema = make_executable_schema(type_defs, query, subscription)
 
-middleware = [
-    Middleware(CORSMiddleware, allow_origins=['*'])
+
+async def publish(request):
+    body = await request.json()
+    queue.put_nowait(body)
+    return UJSONResponse(dict(success=True))
+
+
+async def startup():
+    await asyncio.sleep(1)
+    print('Ready')
+
+routes = [
+    Route('/publish', publish, methods=['POST'])
 ]
 
-app = Starlette(debug=True, middleware=middleware)
+app = Starlette(debug=True, on_startup=[startup], routes=routes)
 app.mount("/graphql", GraphQL(schema, debug=True))

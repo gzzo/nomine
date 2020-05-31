@@ -10,6 +10,7 @@ ariadne = "*"
 apsw = "*"
 starlette = "*"
 uvicorn = "*"
+ujson = "*"
 
 [requires]
 python_version = "3.7"
