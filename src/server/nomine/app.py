@@ -3,14 +3,16 @@ import os
 
 from ariadne import QueryType, make_executable_schema, SubscriptionType
 from ariadne.asgi import GraphQL
-from starlette.routing import Route
-from starlette.applications import Starlette
-from starlette.responses import UJSONResponse
+
+from fastapi import FastAPI
+from fastapi.responses import UJSONResponse
+from fastapi.requests import Request
 
 from nomine.db import init_db, Session
 from nomine.models import namer_watch_folder
 
 query = QueryType()
+app = FastAPI(debug=True)
 
 type_defs = """
     type Query {
@@ -51,13 +53,14 @@ def resolve_hello(_, info):
 schema = make_executable_schema(type_defs, query, subscription)
 
 
-async def publish(request):
+@app.post('/publish')
+async def publish(request: Request) -> UJSONResponse:
     body = await request.json()
     queue.put_nowait(body)
     return UJSONResponse(dict(success=True))
 
 
-async def watch():
+async def watch() -> None:
     session = Session()
 
     while True:
@@ -68,14 +71,11 @@ async def watch():
         await asyncio.sleep(10)
 
 
-async def startup():
+@app.on_event('startup')
+async def startup() -> None:
     asyncio.create_task(watch())
 
-routes = [
-    Route('/publish', publish, methods=['POST'])
-]
 
 init_db()
 
-app = Starlette(debug=True, on_startup=[startup], routes=routes)
-app.mount("/graphql", GraphQL(schema, debug=True))
+app.mount("/graphql", GraphQL(schema))
