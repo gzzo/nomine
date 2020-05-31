@@ -3,6 +3,8 @@ import asyncio
 from ariadne import QueryType, make_executable_schema, SubscriptionType
 from ariadne.asgi import GraphQL
 from starlette.applications import Starlette
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
 
 query = QueryType()
 
@@ -34,12 +36,15 @@ subscription.set_source("counter", counter_generator)
 
 @query.field("hello")
 def resolve_hello(_, info):
-    request = info.context
-    user_agent = request.headers.get("User-Agent", "Guest")
-    return "Hello, %s!" % user_agent
+    request = info.context['request']
+    return "Hello, {}!".format(request.headers['user-agent'])
 
 
 schema = make_executable_schema(type_defs, query, subscription)
 
-app = Starlette(debug=True)
+middleware = [
+    Middleware(CORSMiddleware, allow_origins=['*'])
+]
+
+app = Starlette(debug=True, middleware=middleware)
 app.mount("/graphql", GraphQL(schema, debug=True))

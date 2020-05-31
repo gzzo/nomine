@@ -32,11 +32,11 @@ const store = createStore(
 sagaMiddleware.run(rootSaga)
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:5000/graphql',
+  uri: '/graphql/',
 })
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:5000/graphql`,
+  uri: `ws://127.0.0.1:5000/graphql/`,
   options: {
     reconnect: true,
   },

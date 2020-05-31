@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSubscription, gql } from '@apollo/client'
+import { useSubscription, gql, useQuery } from '@apollo/client'
 
 import Page from 'components/page'
 
@@ -9,8 +9,15 @@ const HELLO_WORLD = gql`
   }
 `
 
+const QUERY = gql`
+  query GetHello {
+    hello
+  }
+`
+
 function Home(): JSX.Element {
   const { data, loading, error } = useSubscription(HELLO_WORLD)
+  // const { data, loading, error } = useQuery(QUERY)
   console.log(data, loading, error)
   if (loading || error) {
     return null
