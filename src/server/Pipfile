@@ -11,6 +11,7 @@ uvicorn = "*"
 ujson = "*"
 sqlalchemy = "*"
 fastapi = "*"
+graphql = "*"
 
 [requires]
 python_version = "3.7"

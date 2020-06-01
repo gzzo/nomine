@@ -9,21 +9,10 @@ from fastapi.responses import UJSONResponse
 from fastapi.requests import Request
 
 from nomine.db import init_db, Session
-from nomine.models import namer_watch_folder
+from nomine.graphql import build_schema
+from nomine.models import NamerWatchFolder
 
-query = QueryType()
 app = FastAPI(debug=True)
-
-type_defs = """
-    type Query {
-        hello: String!
-    }
-    
-    type Subscription {
-        folder: [String]!
-    }
-"""
-
 
 queue = asyncio.Queue()
 
@@ -44,15 +33,6 @@ subscription.set_field("folder", counter_resolver)
 subscription.set_source("folder", counter_generator)
 
 
-@query.field("hello")
-def resolve_hello(_, info):
-    request = info.context['request']
-    return "Hello, {}!".format(request.headers['user-agent'])
-
-
-schema = make_executable_schema(type_defs, query, subscription)
-
-
 @app.post('/publish')
 async def publish(request: Request) -> UJSONResponse:
     body = await request.json()
@@ -64,7 +44,7 @@ async def watch() -> None:
     session = Session()
 
     while True:
-        watch_folders = session.query(namer_watch_folder.NamerWatchFolder)
+        watch_folders = session.query(NamerWatchFolder)
         for watch_folder in watch_folders:
             queue.put_nowait(os.listdir(watch_folder.folder))
 
@@ -77,5 +57,9 @@ async def startup() -> None:
 
 
 init_db()
+query = QueryType()
+schema = build_schema(query)
+
+query.bind_to_schema(schema)
 
 app.mount("/graphql", GraphQL(schema))
