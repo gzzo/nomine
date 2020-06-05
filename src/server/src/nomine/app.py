@@ -1,16 +1,17 @@
 import asyncio
 import os
 
-from ariadne import QueryType, make_executable_schema, SubscriptionType
+from ariadne import QueryType, SubscriptionType
 from ariadne.asgi import GraphQL
 
 from fastapi import FastAPI
 from fastapi.responses import UJSONResponse
 from fastapi.requests import Request
 
-from nomine.db import init_db, Session
-from nomine.graphql import build_schema
+from nomine.db import init_db, Session, Base
 from nomine.models import NamerWatchFolder
+
+from graphql_sqlalchemy import build_schema
 
 app = FastAPI(debug=True)
 
@@ -33,7 +34,7 @@ subscription.set_field("folder", counter_resolver)
 subscription.set_source("folder", counter_generator)
 
 
-@app.post('/publish')
+@app.post("/publish")
 async def publish(request: Request) -> UJSONResponse:
     body = await request.json()
     queue.put_nowait(body)
@@ -51,15 +52,17 @@ async def watch() -> None:
         await asyncio.sleep(10)
 
 
-@app.on_event('startup')
-async def startup() -> None:
-    asyncio.create_task(watch())
+#
+# @app.on_event('startup')
+# async def startup() -> None:
+#     asyncio.create_task(watch())
 
 
 init_db()
 query = QueryType()
-schema = build_schema(query)
+session = Session()
+schema = build_schema(Base)
 
 query.bind_to_schema(schema)
 
-app.mount("/graphql", GraphQL(schema))
+app.mount("/graphql", GraphQL(schema, context_value=dict(session=session)))
