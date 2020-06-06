@@ -1,7 +1,7 @@
 import asyncio
 import os
 
-from ariadne import QueryType, SubscriptionType
+from ariadne import SubscriptionType
 from ariadne.asgi import GraphQL
 
 from fastapi import FastAPI
@@ -59,10 +59,7 @@ async def watch() -> None:
 
 
 init_db()
-query = QueryType()
 session = Session()
 schema = build_schema(Base)
-
-query.bind_to_schema(schema)
 
 app.mount("/graphql", GraphQL(schema, context_value=dict(session=session)))
