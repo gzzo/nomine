@@ -7,10 +7,6 @@ import InlineSourcePlugin from 'html-webpack-inline-source-plugin'
 export default {
   context: path.resolve(__dirname, 'src'),
 
-  stats: {
-    warnings: false,
-  },
-
   entry: ['react-hot-loader/patch', 'whatwg-fetch', './index.tsx'],
 
   output: {

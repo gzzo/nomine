@@ -11,11 +11,6 @@ export const getRules = () => [
     },
   },
   {
-    enforce: 'pre',
-    test: /\.js$/,
-    loader: 'source-map-loader',
-  },
-  {
     test: /\.s?css$/,
     use: [
       'style-loader',
