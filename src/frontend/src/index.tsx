@@ -1,12 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import createSagaMiddleware from 'redux-saga'
 import { createStore, applyMiddleware } from 'redux'
 import { routerMiddleware } from 'connected-react-router'
-import createSagaMiddleware from 'redux-saga'
 import { createBrowserHistory } from 'history'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { getMainDefinition } from '@apollo/client/utilities'
+import { WebSocketLink } from '@apollo/link-ws'
 import {
   ApolloProvider,
   ApolloClient,
@@ -14,7 +15,6 @@ import {
   InMemoryCache,
   split,
 } from '@apollo/client'
-import { WebSocketLink } from '@apollo/link-ws'
 
 import { reducers, rootSaga } from 'reducers'
 

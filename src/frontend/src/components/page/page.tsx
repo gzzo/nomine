@@ -63,12 +63,12 @@ const mapStateToProps = (state: RootState) => {
 }
 
 const mapDispatchToProps = {
-  openDrawer: () => openDrawer(),
-  closeDrawer: () => closeDrawer(),
+  openDrawer,
+  closeDrawer,
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
 
 type ReduxProps = ConnectedProps<typeof connector>
 
-export default Page
+export default connector(Page)

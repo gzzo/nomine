@@ -12,18 +12,10 @@ export function* rootSaga(): Generator {
   yield all([sampleRootSaga()])
 }
 
-const rootReducers = combineReducers({
-  page,
-})
-
 export const reducers = (history: History): Reducer =>
   combineReducers({
-    ...rootReducers,
+    page,
     router: connectRouter(history),
   })
 
-type RouterReducerType = {
-  router: Reducer
-}
-
-export type RootState = ReturnType<typeof rootReducers & RouterReducerType>
+export type RootState = ReturnType<ReturnType<typeof reducers>>
