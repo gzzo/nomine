@@ -1,9 +1,13 @@
 import React from 'react'
+import { connect, ConnectedProps } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import { Container } from '@material-ui/core'
 
 import { Drawer } from 'components/drawer'
 import { AppBar } from 'components/appBar'
+
+import { openDrawer, closeDrawer } from 'reducers/page'
+import { RootState } from 'reducers'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,30 +26,28 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-type PageProps = {
+type PageProps = ReduxProps & {
   children: JSX.Element
   title: string
 }
 
-export default function Page({ children, title }: PageProps): JSX.Element {
+function Page({
+  children,
+  title,
+  openDrawer,
+  closeDrawer,
+  drawerIsOpen,
+}: PageProps): JSX.Element {
   const classes = useStyles()
-  const [isOpen, setOpen] = React.useState(true)
-
-  const handleDrawerOpen = () => {
-    setOpen(true)
-  }
-  const handleDrawerClose = () => {
-    setOpen(false)
-  }
 
   return (
     <div className={classes.root}>
       <AppBar
-        handleDrawerOpen={handleDrawerOpen}
-        isOpen={isOpen}
+        handleDrawerOpen={openDrawer}
+        isOpen={drawerIsOpen}
         title={title}
       />
-      <Drawer handleDrawerClose={handleDrawerClose} isOpen={isOpen} />
+      <Drawer handleDrawerClose={closeDrawer} isOpen={drawerIsOpen} />
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Container maxWidth="lg">{children}</Container>
@@ -53,3 +55,20 @@ export default function Page({ children, title }: PageProps): JSX.Element {
     </div>
   )
 }
+
+const mapStateToProps = (state: RootState) => {
+  return {
+    drawerIsOpen: state.page.drawer.isOpen,
+  }
+}
+
+const mapDispatchToProps = {
+  openDrawer: () => openDrawer(),
+  closeDrawer: () => closeDrawer(),
+}
+
+const connector = connect(mapStateToProps, mapDispatchToProps)
+
+type ReduxProps = ConnectedProps<typeof connector>
+
+export default Page

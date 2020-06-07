@@ -11,7 +11,7 @@ import {
   ListItemText,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { ChevronLeft, Dashboard } from '@material-ui/icons'
+import { ChevronLeft } from '@material-ui/icons'
 
 import { DRAWER_WIDTH } from 'consts/style'
 import { MAIN_PAGES } from 'consts/pages'

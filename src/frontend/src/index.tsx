@@ -50,6 +50,8 @@ const splitLink = split(
       definition.operation === 'subscription'
     )
   },
+  // See https://github.com/apollographql/apollo-client/issues/6333
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   wsLink,
   httpLink
