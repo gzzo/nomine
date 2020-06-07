@@ -1,4 +1,5 @@
 import React from 'react'
+import { Dispatch } from 'redux'
 import { connect, ConnectedProps } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import { Container } from '@material-ui/core'
@@ -6,7 +7,7 @@ import { Container } from '@material-ui/core'
 import { Drawer } from 'components/drawer'
 import { AppBar } from 'components/appBar'
 
-import { openDrawer, closeDrawer } from 'reducers/page'
+import { setDrawer } from 'reducers/page'
 import { RootState } from 'reducers'
 
 const useStyles = makeStyles(theme => ({
@@ -27,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 type PageProps = ReduxProps & {
-  children: JSX.Element
+  children: React.ReactNode
   title: string
 }
 
@@ -37,7 +38,7 @@ function Page({
   openDrawer,
   closeDrawer,
   drawerIsOpen,
-}: PageProps): JSX.Element {
+}: PageProps): React.ReactElement {
   const classes = useStyles()
 
   return (
@@ -62,13 +63,14 @@ const mapStateToProps = (state: RootState) => {
   }
 }
 
-const mapDispatchToProps = {
-  openDrawer,
-  closeDrawer,
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    openDrawer: () => dispatch(setDrawer(true)),
+    closeDrawer: () => dispatch(setDrawer(false)),
+  }
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
-
 type ReduxProps = ConnectedProps<typeof connector>
 
 export default connector(Page)

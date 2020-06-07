@@ -1,23 +1,53 @@
 import React from 'react'
-import { Box, Typography, Grid, Card, CardContent } from '@material-ui/core'
+import {
+  CardHeader,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  IconButton,
+} from '@material-ui/core'
+import { MoreVert } from '@material-ui/icons'
 
 import { Page } from 'components/page'
 
-export default function Dashboard(): JSX.Element {
+const tiles = [
+  {
+    title: 'hello',
+  },
+  {
+    title: 'test',
+  },
+  {
+    title: 'word',
+  },
+  {
+    title: 'foobar',
+  },
+]
+
+export default function Dashboard(): React.ReactElement {
   return (
     <Page title="Dashboard">
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Typography>test</Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+      <Grid container spacing={8}>
+        {tiles.map(tile => (
+          <Grid item xs={12} md={6} key={tile.title}>
+            <Card key={tile.title} elevation={1}>
+              <CardHeader
+                title="word"
+                action={
+                  <IconButton>
+                    <MoreVert />
+                  </IconButton>
+                }
+              />
+              <CardContent>
+                <Typography>{tile.title}</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
       </Grid>
-      <Box pt={4}>
-        <Typography>word</Typography>
-      </Box>
     </Page>
   )
 }

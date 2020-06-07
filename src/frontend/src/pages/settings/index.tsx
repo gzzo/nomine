@@ -1,23 +1,18 @@
 import React from 'react'
-import { Box, Typography, Grid, Card, CardContent } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 
 import { Page } from 'components/page'
 
-export default function Settings(): JSX.Element {
+import DarkModeSwitch from './darkModeSwitch'
+
+export default function Settings(): React.ReactElement {
   return (
     <Page title="Settings">
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Typography>test word</Typography>
-            </CardContent>
-          </Card>
+          <DarkModeSwitch />
         </Grid>
       </Grid>
-      <Box pt={4}>
-        <Typography>word</Typography>
-      </Box>
     </Page>
   )
 }

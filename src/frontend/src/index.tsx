@@ -1,13 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
 import createSagaMiddleware from 'redux-saga'
+import storage from 'redux-persist/lib/storage'
+import { Provider } from 'react-redux'
+import { persistStore, persistReducer } from 'redux-persist'
 import { createStore, applyMiddleware } from 'redux'
 import { routerMiddleware } from 'connected-react-router'
 import { createBrowserHistory } from 'history'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { WebSocketLink } from '@apollo/link-ws'
+import { PersistGate } from 'redux-persist/integration/react'
 import {
   ApolloProvider,
   ApolloClient,
@@ -23,13 +26,14 @@ import App from './app'
 const history = createBrowserHistory()
 
 const sagaMiddleware = createSagaMiddleware()
+const persistConfig = { key: 'root', storage, whitelist: ['page'] }
 const store = createStore(
-  reducers(history),
+  persistReducer(persistConfig, reducers(history)),
   composeWithDevTools(
     applyMiddleware(routerMiddleware(history), sagaMiddleware)
   )
 )
-sagaMiddleware.run(rootSaga)
+const persistor = persistStore(store)
 
 const httpLink = new HttpLink({
   uri: '/graphql/',
@@ -62,12 +66,16 @@ const client = new ApolloClient({
   link: splitLink,
 })
 
+sagaMiddleware.run(rootSaga)
+
 const render = (): void => {
   ReactDOM.render(
     <Provider store={store}>
-      <ApolloProvider client={client}>
-        <App history={history} />
-      </ApolloProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <ApolloProvider client={client}>
+          <App history={history} />
+        </ApolloProvider>
+      </PersistGate>
     </Provider>,
     document.getElementById('root')
   )
@@ -76,7 +84,7 @@ const render = (): void => {
 if (module.hot) {
   module.hot.accept('app', render)
   module.hot.accept('reducers', () => {
-    store.replaceReducer(reducers(history))
+    store.replaceReducer(persistReducer(persistConfig, reducers(history)))
   })
 }
 

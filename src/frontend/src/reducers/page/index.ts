@@ -1,22 +1,23 @@
 import {
-  CloseDrawerAction,
-  OpenDrawerAction,
+  SetDrawerAction,
   PageActionTypes,
   PageState,
+  SetDarkModeAction,
+  SET_DRAWER,
+  SET_DARK_MODE,
 } from './types'
 
-export const CLOSE_DRAWER = 'page/CLOSE_DRAWER'
-export const OPEN_DRAWER = 'page/OPEN_DRAWER'
-
-export const closeDrawer = (): CloseDrawerAction => {
+export const setDrawer = (isOpen: boolean): SetDrawerAction => {
   return {
-    type: CLOSE_DRAWER,
+    type: SET_DRAWER,
+    isOpen,
   }
 }
 
-export const openDrawer = (): OpenDrawerAction => {
+export const setDarkMode = (isDarkMode: boolean): SetDarkModeAction => {
   return {
-    type: OPEN_DRAWER,
+    type: SET_DARK_MODE,
+    isDarkMode,
   }
 }
 
@@ -24,6 +25,7 @@ const initialState: PageState = {
   drawer: {
     isOpen: true,
   },
+  isDarkMode: null,
 }
 
 export const reducer = (
@@ -31,23 +33,20 @@ export const reducer = (
   action: PageActionTypes
 ): PageState => {
   switch (action.type) {
-    case OPEN_DRAWER: {
+    case SET_DRAWER: {
       return {
         ...state,
         drawer: {
           ...state.drawer,
-          isOpen: true,
+          isOpen: action.isOpen,
         },
       }
     }
 
-    case CLOSE_DRAWER: {
+    case SET_DARK_MODE: {
       return {
         ...state,
-        drawer: {
-          ...state.drawer,
-          isOpen: false,
-        },
+        isDarkMode: action.isDarkMode,
       }
     }
 

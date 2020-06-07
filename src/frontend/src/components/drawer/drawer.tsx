@@ -36,9 +36,6 @@ const useStyles = makeStyles(theme => ({
     }),
     overflowX: 'hidden',
     width: theme.spacing(7) + 1,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
-    },
   },
   toolbar: {
     display: 'flex',
@@ -54,7 +51,7 @@ type MainDrawerProps = {
   isOpen: boolean
 }
 
-export default function MainDrawer(props: MainDrawerProps): JSX.Element {
+export default function MainDrawer(props: MainDrawerProps): React.ReactElement {
   const classes = useStyles()
   const { handleDrawerClose, isOpen } = props
 

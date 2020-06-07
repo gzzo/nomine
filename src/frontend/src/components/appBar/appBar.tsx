@@ -48,7 +48,7 @@ type AppBarProps = {
   title: string
 }
 
-export default function AppBar(props: AppBarProps): JSX.Element {
+export default function AppBar(props: AppBarProps): React.ReactElement {
   const classes = useStyles()
   const { isOpen, handleDrawerOpen, title } = props
 
