@@ -7,7 +7,7 @@ export const getRules = () => [
       test: /node_modules/,
     },
     use: {
-      loader: 'ts-loader',
+      loader: 'babel-loader',
     },
   },
   {

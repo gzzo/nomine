@@ -50,6 +50,7 @@ const splitLink = split(
       definition.operation === 'subscription'
     )
   },
+  // @ts-ignore
   wsLink,
   httpLink
 )
