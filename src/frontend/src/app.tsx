@@ -1,12 +1,12 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import { hot } from 'react-hot-loader/root'
 import { Helmet } from 'react-helmet'
 import { ConnectedRouter } from 'connected-react-router'
 import { History } from 'history'
 import CssBaseline from '@material-ui/core/CssBaseline'
 
-import Home from 'pages/home'
+import { MAIN_PAGES } from 'consts/pages'
 
 type AppProps = {
   history: History
@@ -16,8 +16,8 @@ class App extends React.Component<AppProps> {
   render() {
     return (
       <ConnectedRouter history={this.props.history}>
-        <CssBaseline />
         <div>
+          <CssBaseline />
           <Helmet>
             <title>Hello</title>
             <meta
@@ -34,7 +34,10 @@ class App extends React.Component<AppProps> {
             />
           </Helmet>
           <Switch>
-            <Route path="/" component={Home} />
+            {MAIN_PAGES.map(({ path, Component }) => (
+              <Route key={path} path={path} component={Component} />
+            ))}
+            <Redirect from="/" to="/dashboard" />
           </Switch>
         </div>
       </ConnectedRouter>

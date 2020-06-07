@@ -1,21 +1,29 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import classNames from 'classnames'
-import { Drawer, IconButton, Divider, List } from '@material-ui/core'
+import {
+  Drawer,
+  IconButton,
+  Divider,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { ChevronLeft } from '@material-ui/icons'
+import { ChevronLeft, Dashboard } from '@material-ui/icons'
 
-import { mainListItems, secondaryListItems } from './listItems'
-
-const drawerWidth = 240
+import { DRAWER_WIDTH } from 'consts/style'
+import { MAIN_PAGES } from 'consts/pages'
 
 const useStyles = makeStyles(theme => ({
   drawer: {
-    width: drawerWidth,
+    width: DRAWER_WIDTH,
     flexShrink: 0,
     whiteSpace: 'nowrap',
   },
   drawerOpen: {
-    width: drawerWidth,
+    width: DRAWER_WIDTH,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -70,9 +78,22 @@ export default function MainDrawer(props: MainDrawerProps): JSX.Element {
         </IconButton>
       </div>
       <Divider />
-      <List>{mainListItems}</List>
-      <Divider />
-      <List>{secondaryListItems}</List>
+      <List>
+        {MAIN_PAGES.map(({ path, title, Icon }) => (
+          <ListItem
+            key={path}
+            component={Link}
+            to={{ pathname: path }}
+            button
+            selected={location.pathname === path}
+          >
+            <ListItemIcon>
+              <Icon />
+            </ListItemIcon>
+            <ListItemText primary={title} />
+          </ListItem>
+        ))}
+      </List>
     </Drawer>
   )
 }

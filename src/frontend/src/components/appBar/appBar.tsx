@@ -13,7 +13,7 @@ import {
   Notifications as NotificationsIcon,
 } from '@material-ui/icons'
 
-const drawerWidth = 240
+import { DRAWER_WIDTH } from 'consts/style'
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -24,8 +24,8 @@ const useStyles = makeStyles(theme => ({
     }),
   },
   appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: DRAWER_WIDTH,
+    width: `calc(100% - ${DRAWER_WIDTH}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -45,11 +45,12 @@ const useStyles = makeStyles(theme => ({
 type AppBarProps = {
   handleDrawerOpen: () => void
   isOpen: boolean
+  title: string
 }
 
 export default function AppBar(props: AppBarProps): JSX.Element {
   const classes = useStyles()
-  const { isOpen, handleDrawerOpen } = props
+  const { isOpen, handleDrawerOpen, title } = props
 
   return (
     <MaterialAppBar
@@ -77,7 +78,7 @@ export default function AppBar(props: AppBarProps): JSX.Element {
           noWrap
           className={classes.title}
         >
-          Dashboard
+          {title}
         </Typography>
         <IconButton color="inherit">
           <Badge badgeContent={4} color="secondary">
