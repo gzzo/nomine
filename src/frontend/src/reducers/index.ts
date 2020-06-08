@@ -4,6 +4,7 @@ import { all } from 'redux-saga/effects'
 import { History } from 'history'
 
 import { reducer as page } from './page'
+import { reducer as modal } from './modal'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 function* sampleRootSaga() {}
@@ -15,6 +16,7 @@ export function* rootSaga(): Generator {
 export const reducers = (history: History): Reducer =>
   combineReducers({
     page,
+    modal,
     router: connectRouter(history),
   })
 
