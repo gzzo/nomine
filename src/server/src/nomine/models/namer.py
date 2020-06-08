@@ -5,9 +5,12 @@ from nomine.db import Base
 
 
 class Namer(Base):
-    __tablename__ = 'namer'
+    __tablename__ = "namer"
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    type = Column(String)
+    active = Column(Integer)
+    to_dir = Column(String)
 
     folders = relationship("NamerWatchFolder", back_populates="namer")

@@ -1,3 +1,3 @@
-import Modal from './modal'
+import useModal from './modal'
 
-export { Modal }
+export { useModal }
