@@ -1,7 +1,7 @@
 import asyncio
 import os
 
-from ariadne import SubscriptionType
+from ariadne import SubscriptionType, gql
 from ariadne.asgi import GraphQL
 
 from fastapi import FastAPI
