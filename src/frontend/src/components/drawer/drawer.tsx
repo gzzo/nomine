@@ -14,7 +14,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { ChevronLeft } from '@material-ui/icons'
 
 import { DRAWER_WIDTH } from 'consts/style'
-import { MAIN_PAGES } from 'consts/pages'
+import { DRAWER_MAIN_PAGES } from 'consts/pages'
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -76,7 +76,7 @@ export default function MainDrawer(props: MainDrawerProps): React.ReactElement {
       </div>
       <Divider />
       <List>
-        {MAIN_PAGES.map(({ path, title, Icon }) => (
+        {DRAWER_MAIN_PAGES.map(({ path, title, Icon }) => (
           <ListItem
             key={path}
             component={Link}

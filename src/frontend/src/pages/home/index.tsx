@@ -1,32 +1,36 @@
 import React from 'react'
-import { connect, ConnectedProps } from 'react-redux'
 import {
   CardHeader,
   Typography,
   Grid,
   Card,
+  CardActions,
   CardContent,
   IconButton,
   Fab,
+  Button,
   Divider,
   Box,
 } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 import { MoreVert, Add } from '@material-ui/icons'
 import { gql, useQuery } from '@apollo/client'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { AddNamerDialog } from 'components/addNamer'
 import { Page } from 'components/page'
-import { GetNamersQuery } from 'consts/types'
-import { Dispatch } from 'redux'
-import { setModal } from 'reducers/modal'
+import { GetNamersQuery, Namer } from 'consts/types'
+import { useModal } from 'components/modal'
 import { ADD_NAMER_DIALOG } from 'consts/modals'
+import { NAMER_PAGE } from 'consts/pages'
+import { withParams } from 'utils/router'
 
 export const GET_NAMERS = gql`
   query GetNamers {
     namer {
       id
       name
+      type
     }
   }
 `
@@ -35,11 +39,46 @@ const useStyles = makeStyles({
   title: {
     flexGrow: 1,
   },
+  more: {
+    marginLeft: 'auto',
+  },
 })
 
-function Dashboard({ openAddNamerDialog }: ReduxProps): React.ReactElement {
+function NamerCard({ id, name, type }: Namer) {
+  const classes = useStyles()
+  return (
+    <Card elevation={1}>
+      <CardHeader
+        title={name}
+        subheader={type}
+        action={
+          <IconButton>
+            <MoreVert />
+          </IconButton>
+        }
+      />
+      <CardContent>
+        <Typography>{name}</Typography>
+      </CardContent>
+      <CardActions>
+        <Button
+          className={classes.more}
+          size="small"
+          color="primary"
+          component={Link}
+          to={withParams(NAMER_PAGE.path, { namer_id: id })}
+        >
+          More
+        </Button>
+      </CardActions>
+    </Card>
+  )
+}
+
+function Dashboard(): React.ReactElement {
   const classes = useStyles()
   const { loading, error, data } = useQuery<GetNamersQuery>(GET_NAMERS)
+  const { openModal: openAddNamerDialog } = useModal(ADD_NAMER_DIALOG)
 
   if (loading || error) {
     return null
@@ -64,19 +103,7 @@ function Dashboard({ openAddNamerDialog }: ReduxProps): React.ReactElement {
       <Grid container spacing={8}>
         {namer.map(namerObject => (
           <Grid item xs={12} md={6} key={namerObject.id}>
-            <Card elevation={1}>
-              <CardHeader
-                title="word"
-                action={
-                  <IconButton>
-                    <MoreVert />
-                  </IconButton>
-                }
-              />
-              <CardContent>
-                <Typography>{namerObject.name}</Typography>
-              </CardContent>
-            </Card>
+            <NamerCard {...namerObject} />
           </Grid>
         ))}
       </Grid>
@@ -84,14 +111,4 @@ function Dashboard({ openAddNamerDialog }: ReduxProps): React.ReactElement {
   )
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    openAddNamerDialog: () =>
-      dispatch(setModal({ modalId: ADD_NAMER_DIALOG, isOpen: true })),
-  }
-}
-
-const connector = connect(null, mapDispatchToProps)
-type ReduxProps = ConnectedProps<typeof connector>
-
-export default connector(Dashboard)
+export default Dashboard

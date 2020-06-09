@@ -8,7 +8,7 @@ import { CssBaseline, useMediaQuery } from '@material-ui/core'
 import { createMuiTheme } from '@material-ui/core/styles'
 
 import { ThemeProvider } from 'components/themeProvider'
-import { MAIN_PAGES } from 'consts/pages'
+import { ALL_PAGES } from 'consts/pages'
 
 type AppProps = {
   history: History
@@ -44,7 +44,7 @@ function App({ history }: AppProps): React.ReactElement {
           />
         </Helmet>
         <Switch>
-          {MAIN_PAGES.map(({ path, Component }) => (
+          {ALL_PAGES.map(({ path, Component }) => (
             <Route key={path} path={path} component={Component} />
           ))}
           <Redirect from="/" to="/dashboard" />

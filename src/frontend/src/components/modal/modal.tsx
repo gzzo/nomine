@@ -8,6 +8,7 @@ import { createSelector } from 'reselect'
 
 type UseModalType = {
   isOpen: boolean
+  openModal: () => void
   closeModal: () => void
 }
 
@@ -22,7 +23,8 @@ export default function useModal(modalId: string): UseModalType {
   const selectModal = useMemo(makeModalSelector, [])
   const isOpen = useSelector((state: RootState) => selectModal(state, modalId))
   const dispatch = useDispatch()
+  const openModal = () => dispatch(setModal({ modalId, isOpen: true }))
   const closeModal = () => dispatch(setModal({ modalId, isOpen: false }))
 
-  return { isOpen, closeModal }
+  return { isOpen, openModal, closeModal }
 }

@@ -1,5 +1,8 @@
+import _ from 'lodash'
+
 import DashboardPage from 'pages/home'
 import SettingsPage from 'pages/settings'
+import NamerPage from 'pages/namer'
 
 import {
   Dashboard as DashboardIcon,
@@ -20,4 +23,11 @@ export const SETTINGS_PAGE = {
   title: 'Settings',
 }
 
-export const MAIN_PAGES = [DASHBOARD_PAGE, SETTINGS_PAGE]
+export const NAMER_PAGE = {
+  Component: NamerPage,
+  path: '/namer/:namer_id',
+}
+
+export const DRAWER_MAIN_PAGES = [DASHBOARD_PAGE, SETTINGS_PAGE]
+
+export const ALL_PAGES = _.concat(DRAWER_MAIN_PAGES, [NAMER_PAGE])

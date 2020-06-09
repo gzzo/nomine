@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { useMediaQuery } from '@material-ui/core'
+import blue from '@material-ui/core/colors/blue'
 import {
   createMuiTheme,
   ThemeProvider as MaterialThemeProvider,
@@ -24,6 +25,7 @@ function ThemeProvider({
       createMuiTheme({
         palette: {
           type: useDarkMode ? 'dark' : 'light',
+          primary: blue,
         },
       }),
     [useDarkMode]
