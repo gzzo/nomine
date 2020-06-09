@@ -17,12 +17,12 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { AddNamerDialog } from 'components/addNamer'
 import { Page } from 'components/page'
-import { NamerType } from 'consts/types'
+import { GetNamersQuery } from 'consts/types'
 import { Dispatch } from 'redux'
 import { setModal } from 'reducers/modal'
 import { ADD_NAMER_DIALOG } from 'consts/modals'
 
-const GET_NAMERS = gql`
+export const GET_NAMERS = gql`
   query GetNamers {
     namer {
       id
@@ -30,10 +30,6 @@ const GET_NAMERS = gql`
     }
   }
 `
-
-type GetNamersData = {
-  namer: NamerType[]
-}
 
 const useStyles = makeStyles({
   title: {
@@ -43,7 +39,7 @@ const useStyles = makeStyles({
 
 function Dashboard({ openAddNamerDialog }: ReduxProps): React.ReactElement {
   const classes = useStyles()
-  const { loading, error, data } = useQuery<GetNamersData>(GET_NAMERS)
+  const { loading, error, data } = useQuery<GetNamersQuery>(GET_NAMERS)
 
   if (loading || error) {
     return null
@@ -67,7 +63,7 @@ function Dashboard({ openAddNamerDialog }: ReduxProps): React.ReactElement {
       </Box>
       <Grid container spacing={8}>
         {namer.map(namerObject => (
-          <Grid item xs={12} md={4} key={namerObject.id}>
+          <Grid item xs={12} md={6} key={namerObject.id}>
             <Card elevation={1}>
               <CardHeader
                 title="word"

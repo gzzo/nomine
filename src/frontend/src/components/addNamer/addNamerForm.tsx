@@ -39,7 +39,7 @@ function addNamerForm({
       <Box>
         <FormControl className={classes.formControl}>
           <InputLabel shrink>Name</InputLabel>
-          <Field name="name" as={Input} />
+          <Field name="name" as={Input} autoComplete="off" />
         </FormControl>
       </Box>
       <Box>
