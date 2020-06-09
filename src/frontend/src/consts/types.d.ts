@@ -289,5 +289,15 @@ export type InsertNamerMutation = { __typename?: 'Mutation' } & {
 export type GetNamersQueryVariables = {}
 
 export type GetNamersQuery = { __typename?: 'Query' } & {
-  namer: Array<{ __typename?: 'namer' } & Pick<Namer, 'id' | 'name'>>
+  namer: Array<{ __typename?: 'namer' } & Pick<Namer, 'id' | 'name' | 'type'>>
+}
+
+export type GetNamerQueryVariables = {
+  id: Scalars['Int']
+}
+
+export type GetNamerQuery = { __typename?: 'Query' } & {
+  namer_by_pk?: Maybe<
+    { __typename?: 'namer' } & Pick<Namer, 'id' | 'name' | 'type'>
+  >
 }

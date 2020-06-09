@@ -14,27 +14,26 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
-  toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
-  },
+  appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
   },
 }))
 
 type PageProps = ReduxProps & {
   children: React.ReactNode
+  header?: React.ReactNode
   title: string
 }
 
 function Page({
   children,
   title,
+  header,
   openDrawer,
   closeDrawer,
   drawerIsOpen,
@@ -50,8 +49,11 @@ function Page({
       />
       <Drawer handleDrawerClose={closeDrawer} isOpen={drawerIsOpen} />
       <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <Container maxWidth="lg">{children}</Container>
+        <div className={classes.appBarSpacer} />
+        {header}
+        <Container maxWidth="lg" className={classes.container}>
+          {children}
+        </Container>
       </main>
     </div>
   )

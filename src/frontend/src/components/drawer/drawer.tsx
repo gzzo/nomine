@@ -11,7 +11,7 @@ import {
   ListItemText,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { ChevronLeft } from '@material-ui/icons'
+import { MenuOpen } from '@material-ui/icons'
 
 import { DRAWER_WIDTH } from 'consts/style'
 import { DRAWER_MAIN_PAGES } from 'consts/pages'
@@ -71,7 +71,7 @@ export default function MainDrawer(props: MainDrawerProps): React.ReactElement {
     >
       <div className={classes.toolbar}>
         <IconButton onClick={handleDrawerClose}>
-          <ChevronLeft />
+          <MenuOpen />
         </IconButton>
       </div>
       <Divider />
