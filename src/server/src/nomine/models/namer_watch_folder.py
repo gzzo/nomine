@@ -11,5 +11,6 @@ class NamerWatchFolder(Base):
     namer_id = Column(ForeignKey("namer.id"), nullable=False)
     folder = Column(String, nullable=False)
     frequency = Column(Integer, server_default="10")
+    method = Column(String, nullable=False, server_default="hard_link")
 
     namer = relationship("Namer", back_populates="folders")
