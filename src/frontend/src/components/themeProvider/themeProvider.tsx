@@ -27,6 +27,15 @@ function ThemeProvider({
           type: useDarkMode ? 'dark' : 'light',
           primary: blue,
         },
+        overrides: {
+          MuiTableRow: {
+            root: {
+              '&:last-child td': {
+                borderBottom: 0,
+              },
+            },
+          },
+        },
       }),
     [useDarkMode]
   )

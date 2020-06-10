@@ -5,6 +5,8 @@ import {
   Typography,
   Container,
   IconButton,
+  Toolbar,
+  Paper,
 } from '@material-ui/core'
 import { Link, RouteChildrenProps } from 'react-router-dom'
 import { ArrowBack } from '@material-ui/icons'
@@ -13,8 +15,8 @@ import { gql, useQuery } from '@apollo/client'
 
 import { Page } from 'components/page'
 import { DASHBOARD_PAGE } from 'consts/pages'
-import { GetNamerQuery } from 'consts/types'
-import { FoldersTable } from 'components/foldersTable'
+import { GetNamerQuery, Namer as NamerType } from 'consts/types'
+import { FoldersTable as InputFoldersTable } from 'components/foldersTable'
 
 export const GET_NAMER = gql`
   query GetNamer($id: Int!) {
@@ -22,9 +24,11 @@ export const GET_NAMER = gql`
       id
       name
       type
+      to_dir
       folders {
         id
         folder
+        method
       }
     }
   }
@@ -33,6 +37,9 @@ export const GET_NAMER = gql`
 const useStyles = makeStyles(theme => ({
   header: {
     padding: `${theme.spacing(0.5)}px ${theme.spacing(1)}px`,
+  },
+  paper: {
+    paddingBottom: theme.spacing(2),
   },
 }))
 
@@ -58,6 +65,27 @@ function PageHeader() {
   )
 }
 
+type OutputFolderPaperProps = {
+  to_dir: NamerType['to_dir']
+}
+
+function OutputFolderPaper({
+  to_dir,
+}: OutputFolderPaperProps): React.ReactElement {
+  const classes = useStyles()
+
+  return (
+    <Paper className={classes.paper}>
+      <Toolbar>
+        <Typography variant="h6">Output Folder</Typography>
+      </Toolbar>
+      <Container>
+        <Typography>{to_dir}</Typography>
+      </Container>
+    </Paper>
+  )
+}
+
 export default function Namer(
   props: RouteChildrenProps<{ namer_id: string }>
 ): React.ReactElement {
@@ -70,12 +98,15 @@ export default function Namer(
     return null
   }
 
-  const { name, folders } = data.namer_by_pk
+  const { name, folders, to_dir } = data.namer_by_pk
 
   return (
     <Page title={`Namer: ${name}`} header={<PageHeader />}>
       <Container>
-        <FoldersTable folders={folders} />
+        <InputFoldersTable folders={folders} />
+        <Box my={4}>
+          <OutputFolderPaper to_dir={to_dir} />
+        </Box>
       </Container>
     </Page>
   )

@@ -11,15 +11,15 @@ import {
   TableCell,
 } from '@material-ui/core'
 
-import { Namer_Watch_Folder } from 'consts/types'
+import { GetNamerQuery } from 'consts/types'
 import { AddFolderDialog } from 'components/addFolder'
 
 import TableToolbar from './tableToolbar'
 
-const HEAD_CELLS = [{ name: 'Folder' }]
+const HEAD_CELLS = [{ name: 'Folder' }, { name: 'Method' }]
 
 type FoldersTableProps = {
-  folders: Namer_Watch_Folder[]
+  folders: GetNamerQuery['namer_by_pk']['folders']
 }
 
 export default function FoldersTable({
@@ -48,6 +48,7 @@ export default function FoldersTable({
                   <Checkbox />
                 </TableCell>
                 <TableCell>{folderObj.folder}</TableCell>
+                <TableCell>{folderObj.method}</TableCell>
               </TableRow>
             ))}
           </TableBody>

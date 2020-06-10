@@ -167,9 +167,10 @@ export type Namer_Set_Input = {
 export type Namer_Watch_Folder = {
   __typename?: 'namer_watch_folder'
   id: Scalars['Int']
-  namer_id?: Maybe<Scalars['Int']>
-  folder?: Maybe<Scalars['String']>
+  namer_id: Scalars['Int']
+  folder: Scalars['String']
   frequency?: Maybe<Scalars['Int']>
+  method: Scalars['String']
   namer?: Maybe<Namer>
 }
 
@@ -181,6 +182,7 @@ export type Namer_Watch_Folder_Bool_Exp = {
   namer_id?: Maybe<Int_Comparison_Exp>
   folder?: Maybe<String_Comparison_Exp>
   frequency?: Maybe<Int_Comparison_Exp>
+  method?: Maybe<String_Comparison_Exp>
   namer?: Maybe<Namer_Bool_Exp>
 }
 
@@ -195,6 +197,7 @@ export type Namer_Watch_Folder_Insert_Input = {
   namer_id?: Maybe<Scalars['Int']>
   folder?: Maybe<Scalars['String']>
   frequency?: Maybe<Scalars['Int']>
+  method?: Maybe<Scalars['String']>
 }
 
 export type Namer_Watch_Folder_Mutation_Response = {
@@ -212,6 +215,7 @@ export type Namer_Watch_Folder_Order_By = {
   namer_id?: Maybe<Order_By>
   folder?: Maybe<Order_By>
   frequency?: Maybe<Order_By>
+  method?: Maybe<Order_By>
   namer?: Maybe<Namer_Order_By>
 }
 
@@ -224,6 +228,7 @@ export type Namer_Watch_Folder_Set_Input = {
   namer_id?: Maybe<Scalars['Int']>
   folder?: Maybe<Scalars['String']>
   frequency?: Maybe<Scalars['Int']>
+  method?: Maybe<Scalars['String']>
 }
 
 export enum Order_By {
@@ -275,6 +280,20 @@ export type String_Comparison_Exp = {
   _nlike?: Maybe<Scalars['String']>
 }
 
+export type InsertFolderMutationVariables = {
+  namer_id: Scalars['Int']
+  folder: Scalars['String']
+}
+
+export type InsertFolderMutation = { __typename?: 'Mutation' } & {
+  insert_namer_watch_folder_one?: Maybe<
+    { __typename?: 'namer_watch_folder' } & Pick<
+      Namer_Watch_Folder,
+      'id' | 'folder'
+    >
+  >
+}
+
 export type InsertNamerMutationVariables = {
   name: Scalars['String']
   type: Scalars['String']
@@ -298,13 +317,16 @@ export type GetNamerQueryVariables = {
 
 export type GetNamerQuery = { __typename?: 'Query' } & {
   namer_by_pk?: Maybe<
-    { __typename?: 'namer' } & Pick<Namer, 'id' | 'name' | 'type'> & {
+    { __typename?: 'namer' } & Pick<
+      Namer,
+      'id' | 'name' | 'type' | 'to_dir'
+    > & {
         folders?: Maybe<
           Array<
             Maybe<
               { __typename?: 'namer_watch_folder' } & Pick<
                 Namer_Watch_Folder,
-                'id' | 'folder'
+                'id' | 'folder' | 'method'
               >
             >
           >
