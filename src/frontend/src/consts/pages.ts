@@ -1,8 +1,8 @@
 import _ from 'lodash'
 
-import DashboardPage from 'pages/home'
-import SettingsPage from 'pages/settings'
-import NamerPage from 'pages/namer'
+import { HomePage } from 'pages/home'
+import { SettingsPage } from 'pages/settings'
+import { NamerPage } from 'pages/namer'
 
 import {
   Dashboard as DashboardIcon,
@@ -10,7 +10,7 @@ import {
 } from '@material-ui/icons'
 
 export const DASHBOARD_PAGE = {
-  Component: DashboardPage,
+  Component: HomePage,
   Icon: DashboardIcon,
   path: '/dashboard',
   title: 'Dashboard',

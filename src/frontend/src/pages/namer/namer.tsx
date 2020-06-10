@@ -14,13 +14,18 @@ import { gql, useQuery } from '@apollo/client'
 import { Page } from 'components/page'
 import { DASHBOARD_PAGE } from 'consts/pages'
 import { GetNamerQuery } from 'consts/types'
+import { FoldersTable } from 'components/foldersTable'
 
-const GET_NAMER = gql`
+export const GET_NAMER = gql`
   query GetNamer($id: Int!) {
     namer_by_pk(id: $id) {
       id
       name
       type
+      folders {
+        id
+        folder
+      }
     }
   }
 `
@@ -31,10 +36,31 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+function PageHeader() {
+  const classes = useStyles()
+
+  return (
+    <Box>
+      <Box className={classes.header}>
+        <Container>
+          <Box display="flex" alignItems="center">
+            <Box mr={1}>
+              <IconButton component={Link} to={DASHBOARD_PAGE.path}>
+                <ArrowBack />
+              </IconButton>
+            </Box>
+            <Typography>Dashboard</Typography>
+          </Box>
+        </Container>
+      </Box>
+      <Divider />
+    </Box>
+  )
+}
+
 export default function Namer(
   props: RouteChildrenProps<{ namer_id: string }>
 ): React.ReactElement {
-  const classes = useStyles()
   const { namer_id } = props.match.params
   const { loading, error, data } = useQuery<GetNamerQuery>(GET_NAMER, {
     variables: { id: parseInt(namer_id) },
@@ -44,32 +70,12 @@ export default function Namer(
     return null
   }
 
-  const { name } = data.namer_by_pk
+  const { name, folders } = data.namer_by_pk
 
   return (
-    <Page
-      title={`Namer: ${name}`}
-      header={
-        <Box>
-          <Box className={classes.header}>
-            <Container>
-              <Box display="flex" alignItems="center">
-                <Box mr={1}>
-                  <IconButton component={Link} to={DASHBOARD_PAGE.path}>
-                    <ArrowBack />
-                  </IconButton>
-                </Box>
-                <Typography>Dashboard</Typography>
-              </Box>
-            </Container>
-          </Box>
-
-          <Divider />
-        </Box>
-      }
-    >
+    <Page title={`Namer: ${name}`} header={<PageHeader />}>
       <Container>
-        <Typography>namer</Typography>
+        <FoldersTable folders={folders} />
       </Container>
     </Page>
   )

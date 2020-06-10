@@ -298,6 +298,17 @@ export type GetNamerQueryVariables = {
 
 export type GetNamerQuery = { __typename?: 'Query' } & {
   namer_by_pk?: Maybe<
-    { __typename?: 'namer' } & Pick<Namer, 'id' | 'name' | 'type'>
+    { __typename?: 'namer' } & Pick<Namer, 'id' | 'name' | 'type'> & {
+        folders?: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'namer_watch_folder' } & Pick<
+                Namer_Watch_Folder,
+                'id' | 'folder'
+              >
+            >
+          >
+        >
+      }
   >
 }

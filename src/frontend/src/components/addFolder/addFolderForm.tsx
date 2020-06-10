@@ -5,8 +5,6 @@ import {
   Input,
   Button,
   DialogActions,
-  MenuItem,
-  Select,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Form, FormikProps, Field } from 'formik'
@@ -18,19 +16,18 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export type AddNamerFormValues = {
-  name: string
-  type: string
+export type AddFolderFormValues = {
+  folder: string
 }
 
-type AddNamerFormProps = FormikProps<AddNamerFormValues> & {
+type AddFolderFormProps = FormikProps<AddFolderFormValues> & {
   closeModal: () => void
 }
 
-function addNamerForm({
+function addFolderForm({
   dirty,
   closeModal,
-}: AddNamerFormProps): React.ReactElement {
+}: AddFolderFormProps): React.ReactElement {
   const disableSubmit = !dirty
   const classes = useStyles()
 
@@ -38,16 +35,7 @@ function addNamerForm({
     <Form>
       <FormControl className={classes.formControl}>
         <InputLabel shrink>Name</InputLabel>
-        <Field name="name" as={Input} autoComplete="off" />
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel shrink htmlFor="age-native-label-placeholder">
-          Type
-        </InputLabel>
-        <Field name="type" as={Select}>
-          <MenuItem value="movies">Movies</MenuItem>
-          <MenuItem value="shows">Shows</MenuItem>
-        </Field>
+        <Field name="folder" as={Input} autoComplete="off" />
       </FormControl>
       <DialogActions>
         <Button onClick={closeModal}>Cancel</Button>
@@ -59,4 +47,4 @@ function addNamerForm({
   )
 }
 
-export default addNamerForm
+export default addFolderForm

@@ -7,7 +7,6 @@ import {
   CardActions,
   CardContent,
   IconButton,
-  Fab,
   Button,
   Divider,
   Box,
@@ -75,7 +74,7 @@ function NamerCard({ id, name, type }: Namer) {
   )
 }
 
-function Dashboard(): React.ReactElement {
+export default function Dashboard(): React.ReactElement {
   const classes = useStyles()
   const { loading, error, data } = useQuery<GetNamersQuery>(GET_NAMERS)
   const { openModal: openAddNamerDialog } = useModal(ADD_NAMER_DIALOG)
@@ -93,9 +92,9 @@ function Dashboard(): React.ReactElement {
         <Typography variant="h4" className={classes.title}>
           Namers
         </Typography>
-        <Fab onClick={openAddNamerDialog}>
+        <IconButton onClick={openAddNamerDialog}>
           <Add />
-        </Fab>
+        </IconButton>
       </Box>
       <Box my={3}>
         <Divider />
@@ -110,5 +109,3 @@ function Dashboard(): React.ReactElement {
     </Page>
   )
 }
-
-export default Dashboard
