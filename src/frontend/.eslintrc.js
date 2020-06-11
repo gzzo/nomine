@@ -1,10 +1,12 @@
 module.exports = {
+  root: true,
   parser: '@typescript-eslint/parser',
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
+    'prettier/@typescript-eslint',
     'plugin:import/recommended',
   ],
   globals: {
@@ -23,7 +25,7 @@ module.exports = {
     jest: true,
     es6: true,
   },
-  plugins: ['import'],
+  plugins: ['import', '@typescript-eslint'],
   settings: {
     react: {
       version: '16.0',

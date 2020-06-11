@@ -10,6 +10,67 @@ export type Scalars = {
   Float: number
 }
 
+export type Folder_Entry = {
+  __typename?: 'folder_entry'
+  id: Scalars['Int']
+  path: Scalars['String']
+  folder_id: Scalars['Int']
+  type: Scalars['String']
+  folder?: Maybe<Namer_Watch_Folder>
+}
+
+export type Folder_Entry_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Folder_Entry_Bool_Exp>>>
+  _or?: Maybe<Array<Maybe<Folder_Entry_Bool_Exp>>>
+  _not?: Maybe<Folder_Entry_Bool_Exp>
+  id?: Maybe<Int_Comparison_Exp>
+  path?: Maybe<String_Comparison_Exp>
+  folder_id?: Maybe<Int_Comparison_Exp>
+  type?: Maybe<String_Comparison_Exp>
+  folder?: Maybe<Namer_Watch_Folder_Bool_Exp>
+}
+
+export type Folder_Entry_Inc_Input = {
+  id?: Maybe<Scalars['Int']>
+  folder_id?: Maybe<Scalars['Int']>
+}
+
+export type Folder_Entry_Insert_Input = {
+  id?: Maybe<Scalars['Int']>
+  path?: Maybe<Scalars['String']>
+  folder_id?: Maybe<Scalars['Int']>
+  type?: Maybe<Scalars['String']>
+}
+
+export type Folder_Entry_Mutation_Response = {
+  __typename?: 'folder_entry_mutation_response'
+  affected_rows: Scalars['Int']
+  returning: Array<Folder_Entry>
+}
+
+export type Folder_Entry_On_Conflict = {
+  merge: Scalars['Boolean']
+}
+
+export type Folder_Entry_Order_By = {
+  id?: Maybe<Order_By>
+  path?: Maybe<Order_By>
+  folder_id?: Maybe<Order_By>
+  type?: Maybe<Order_By>
+  folder?: Maybe<Namer_Watch_Folder_Order_By>
+}
+
+export type Folder_Entry_Pk_Columns_Input = {
+  id: Scalars['Int']
+}
+
+export type Folder_Entry_Set_Input = {
+  id?: Maybe<Scalars['Int']>
+  path?: Maybe<Scalars['String']>
+  folder_id?: Maybe<Scalars['Int']>
+  type?: Maybe<Scalars['String']>
+}
+
 export type Int_Comparison_Exp = {
   _eq?: Maybe<Scalars['Int']>
   _neq?: Maybe<Scalars['Int']>
@@ -36,6 +97,13 @@ export type Mutation = {
   update_namer_watch_folder?: Maybe<Namer_Watch_Folder_Mutation_Response>
   delete_namer_watch_folder_by_pk?: Maybe<Namer_Watch_Folder>
   update_namer_watch_folder_by_pk?: Maybe<Namer_Watch_Folder>
+  insert_folder_entry?: Maybe<Folder_Entry_Mutation_Response>
+  insert_folder_entry_one?: Maybe<Folder_Entry>
+  delete_folder_entry?: Maybe<Folder_Entry_Mutation_Response>
+  update_folder_entry?: Maybe<Folder_Entry_Mutation_Response>
+  delete_folder_entry_by_pk?: Maybe<Folder_Entry>
+  update_folder_entry_by_pk?: Maybe<Folder_Entry>
+  scan_namer?: Maybe<Scalars['Boolean']>
 }
 
 export type MutationInsert_NamerArgs = {
@@ -96,6 +164,40 @@ export type MutationUpdate_Namer_Watch_Folder_By_PkArgs = {
   _inc?: Maybe<Namer_Watch_Folder_Inc_Input>
   _set?: Maybe<Namer_Watch_Folder_Set_Input>
   pk_columns: Namer_Watch_Folder_Pk_Columns_Input
+}
+
+export type MutationInsert_Folder_EntryArgs = {
+  objects: Array<Folder_Entry_Insert_Input>
+  on_conflict?: Maybe<Folder_Entry_On_Conflict>
+}
+
+export type MutationInsert_Folder_Entry_OneArgs = {
+  object?: Maybe<Folder_Entry_Insert_Input>
+  on_conflict?: Maybe<Folder_Entry_On_Conflict>
+}
+
+export type MutationDelete_Folder_EntryArgs = {
+  where?: Maybe<Folder_Entry_Bool_Exp>
+}
+
+export type MutationUpdate_Folder_EntryArgs = {
+  _inc?: Maybe<Folder_Entry_Inc_Input>
+  _set?: Maybe<Folder_Entry_Set_Input>
+  where?: Maybe<Folder_Entry_Bool_Exp>
+}
+
+export type MutationDelete_Folder_Entry_By_PkArgs = {
+  id: Scalars['Int']
+}
+
+export type MutationUpdate_Folder_Entry_By_PkArgs = {
+  _inc?: Maybe<Folder_Entry_Inc_Input>
+  _set?: Maybe<Folder_Entry_Set_Input>
+  pk_columns: Folder_Entry_Pk_Columns_Input
+}
+
+export type MutationScan_NamerArgs = {
+  id: Scalars['Int']
 }
 
 export type Namer = {
@@ -172,6 +274,7 @@ export type Namer_Watch_Folder = {
   frequency?: Maybe<Scalars['Int']>
   method: Scalars['String']
   namer?: Maybe<Namer>
+  folders?: Maybe<Array<Maybe<Folder_Entry>>>
 }
 
 export type Namer_Watch_Folder_Bool_Exp = {
@@ -184,6 +287,7 @@ export type Namer_Watch_Folder_Bool_Exp = {
   frequency?: Maybe<Int_Comparison_Exp>
   method?: Maybe<String_Comparison_Exp>
   namer?: Maybe<Namer_Bool_Exp>
+  folders?: Maybe<Folder_Entry_Bool_Exp>
 }
 
 export type Namer_Watch_Folder_Inc_Input = {
@@ -217,6 +321,7 @@ export type Namer_Watch_Folder_Order_By = {
   frequency?: Maybe<Order_By>
   method?: Maybe<Order_By>
   namer?: Maybe<Namer_Order_By>
+  folders?: Maybe<Folder_Entry_Order_By>
 }
 
 export type Namer_Watch_Folder_Pk_Columns_Input = {
@@ -242,6 +347,8 @@ export type Query = {
   namer_by_pk?: Maybe<Namer>
   namer_watch_folder: Array<Namer_Watch_Folder>
   namer_watch_folder_by_pk?: Maybe<Namer_Watch_Folder>
+  folder_entry: Array<Folder_Entry>
+  folder_entry_by_pk?: Maybe<Folder_Entry>
 }
 
 export type QueryNamerArgs = {
@@ -266,6 +373,17 @@ export type QueryNamer_Watch_Folder_By_PkArgs = {
   id: Scalars['Int']
 }
 
+export type QueryFolder_EntryArgs = {
+  order?: Maybe<Array<Folder_Entry_Order_By>>
+  where?: Maybe<Folder_Entry_Bool_Exp>
+  limit?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+}
+
+export type QueryFolder_Entry_By_PkArgs = {
+  id: Scalars['Int']
+}
+
 export type String_Comparison_Exp = {
   _eq?: Maybe<Scalars['String']>
   _neq?: Maybe<Scalars['String']>
@@ -278,6 +396,15 @@ export type String_Comparison_Exp = {
   _is_null?: Maybe<Scalars['Boolean']>
   _like?: Maybe<Scalars['String']>
   _nlike?: Maybe<Scalars['String']>
+}
+
+export type Subscription = {
+  __typename?: 'Subscription'
+  namer_entries?: Maybe<Folder_Entry>
+}
+
+export type SubscriptionNamer_EntriesArgs = {
+  id: Scalars['Int']
 }
 
 export type InsertFolderMutationVariables = {
@@ -302,6 +429,32 @@ export type InsertNamerMutationVariables = {
 export type InsertNamerMutation = { __typename?: 'Mutation' } & {
   insert_namer_one?: Maybe<
     { __typename?: 'namer' } & Pick<Namer, 'id' | 'name'>
+  >
+}
+
+export type NamerEntriesSubscriptionVariables = {
+  id: Scalars['Int']
+}
+
+export type NamerEntriesSubscription = { __typename?: 'Subscription' } & {
+  namer_entries?: Maybe<
+    { __typename?: 'folder_entry' } & Pick<
+      Folder_Entry,
+      'id' | 'folder_id' | 'path' | 'type'
+    >
+  >
+}
+
+export type GetFoldersQueryVariables = {
+  id: Scalars['Int']
+}
+
+export type GetFoldersQuery = { __typename?: 'Query' } & {
+  folder_entry: Array<
+    { __typename?: 'folder_entry' } & Pick<
+      Folder_Entry,
+      'id' | 'folder_id' | 'path'
+    >
   >
 }
 
