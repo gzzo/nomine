@@ -14,3 +14,4 @@ class NamerWatchFolder(Base):
     method = Column(String, nullable=False, server_default="hard_link")
 
     namer = relationship("Namer", back_populates="folders")
+    folders = relationship("FolderEntry", back_populates="folder")
